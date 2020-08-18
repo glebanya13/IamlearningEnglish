@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Books from '@/components/Books.vue'
-import Words from '@/components/Words.vue'
-import Singin from '@/components/Signin.vue'
-import Singup from '@/components/Signup.vue'
-import Profile from '@/components/Profile.vue'
+import Books from '../views/Books.vue'
+import Words from '../views/Words.vue'
+import Profile from '../views/Profile.vue'
+import Signin from '../views/Signin.vue'
+import Signup from '../views/Signup.vue'
+import Store from '../store'
+
 
 Vue.use(VueRouter)
 
@@ -22,24 +24,33 @@ Vue.use(VueRouter)
     {
       path: '/profile',
       name: 'profile',
-      component: Profile
+      component: Profile,
+      beforeEnter: AuthGuard
     },
     {
       path: '/signin',
       name: 'signin',
-      component: Singin
+      component: Signin
     },
     {
       path: '/signup',
       name: 'signup',
-      component: Singup
+      component: Signup
     },
   
 ]
+
+function AuthGuard(to, from, next){
+  if(Store.getters.isUserAuthenticated)
+    next()
+  else
+    next('/signin')
+}
 
 const router = new VueRouter({
   routes,
   mode: 'history'
 })
+
 
 export default router

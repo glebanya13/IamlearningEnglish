@@ -26,6 +26,10 @@
           <v-icon left v-html="item.icon"></v-icon>
           {{item.title}}
         </v-btn>
+        <v-btn text @click.prevent="signout()" v-if="isUserAuthenticated">
+          <v-icon left>mdi-exit-run</v-icon>
+            Выйти
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
   </div>
@@ -39,40 +43,49 @@ export default {
     };
   },
   computed: {
+    isUserAuthenticated() {
+      return this.$store.getters.isUserAuthenticated;
+    },
     menuItems() {
-      return [
-        {
-          icon: "mdi-eye",
-          title: "Читать",
-          route: "/books",
-        },
-        {
-          icon: "mdi-domain",
-          title: "Учить слова",
-          route: "/words",
-        },
-        {
-          icon: "mdi-account",
-          title: "Профиль",
-          route: "/profile",
-        },
-        {
-          icon: "mdi-exit-run",
-          title: "Выйти",
-          route: "/logout",
-        },
-        {
-          icon: "mdi-exit-to-app",
-          title: "Войти",
-          route: "/singin",
-        },
-        {
-          icon: "mdi-lock-open",
-          title: "Регистрация",
-          route: "/singup",
-        },
-      ];
+      return this.isUserAuthenticated
+        ? [
+            {
+              icon: "mdi-eye",
+              title: "Читать",
+              route: "/books",
+            },
+            {
+              icon: "mdi-account",
+              title: "Профиль",
+              route: "/profile",
+            },
+          ]
+        : [
+            {
+              icon: "mdi-eye",
+              title: "Читать",
+              route: "/books",
+            },
+            {
+              icon: "mdi-exit-to-app",
+              title: "Войти",
+              route: "/signin",
+            },
+            {
+              icon: "mdi-lock-open",
+              title: "Регистрация",
+              route: "/signup",
+            },
+          ];
     },
   },
+  methods:{
+    signout(){
+      this.$confirm('На сегодня хватит английского? Я вернусь завтра').then(res => {
+        if(res)
+           this.$store.dispatch('SIGNOUT')
+      })
+    }
+  }
 };
 </script>
