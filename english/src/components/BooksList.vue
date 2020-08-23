@@ -14,95 +14,14 @@
           </v-container>
         </v-flex>
         <v-flex v-for="book in filteredBooks" :key="book.id" xs12 sm10 md8 offset-sm-1 offset-md-2>
-          <v-card color="info" class="white--text">
-            <v-container fluid>
-              <v-layout row class="hidden-sm-and-down">
-                <v-flex xs4 md3>
-                  <v-img :src="book.imageId"
-                  ></v-img>
-                  <div class="text-xs-center">
-                    <v-btn text color="white">
-                      <v-icon left>mdi-eye</v-icon>YouTube
-                    </v-btn>
-                  </div>
-                </v-flex>
-                <v-flex xs8 md9>
-                  <v-card-title>
-                    <div>
-                      <div class="headline">{{book.title}}</div>
-                      <div>{{book.description}}</div>
-                      <v-divider class="white"></v-divider>
-                      <div>Уровень {{getBookLevel(book.level)}}, {{book.parts}} часть</div>
-                    </div>
-                  </v-card-title>
-                  <v-card-actions>
-                    <v-rating v-model="book.rating" readonly color="yellow" dense half-increments></v-rating>
-                    <div class="ml-1">
-                      <span>{{book.rating}}</span>
-                      <span>{{book.ratingCount}}</span>
-                    </div>
-                    <v-spacer></v-spacer>
-                    <v-btn class="primary" text>Открыть</v-btn>
-                  </v-card-actions>
-                </v-flex>
-              </v-layout>
-
-              <div class="hidden-md-and-up">
-              <v-layout row>
-                <v-flex xs4 md3>
-                  <v-img :src="book.imageId"
-                  ></v-img>
-                  
-                </v-flex>
-                <v-flex xs8 md9>
-                  <v-card-title>
-                    <div>
-                      <h4>{{book.title}}</h4>
-                      <div class="text-xs-center">
-                        <v-btn text color="white">
-                          <v-icon left>mdi-eye</v-icon>YouTube
-                        </v-btn>
-                      </div>
-                    </div>
-                  </v-card-title>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs12>
-                  <div>{{book.description}}</div>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs12>
-                  <div>Уровень {{getBookLevel(book.level)}}, {{book.parts}} часть</div>
-                </v-flex>
-              </v-layout>
-
-               <v-layout row>
-                <v-flex xs12>
-                  <v-card-actions>
-                    <v-rating v-model="book.rating" readonly color="yellow" dense half-increments></v-rating>
-                    <div class="ml-1">
-                      <span>{{book.rating}}</span>
-                      <span>({{book.ratingCount}})</span>
-                    </div>
-                    <v-spacer></v-spacer>
-                    <v-btn class="primary" text>Открыть</v-btn>
-                  </v-card-actions>
-                </v-flex>
-              </v-layout>
-
-              </div>
-            </v-container>
-          </v-card>
+          <book :book="book"></book>
         </v-flex>
       </v-layout>
   </v-container>
 </template>
 
 <script>
+import Book from './BooksListItem'
 export default {
   data(){
     return {
@@ -128,10 +47,8 @@ export default {
         return books
     }
   },
-  methods:{
-    getBookLevel(level){
-      return level.join('/')
-    }
+  components:{
+    Book
   }
 }
 </script>

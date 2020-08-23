@@ -1,34 +1,54 @@
+import Vue from 'vue'
+
 export default {
     state: {
-        books:[
-            {
-                id: 'a1',
-                title: 'The Tortoise And The Hare',
-                description: 'Черепаха и Заяц',
-                imageId: 'https://images-na.ssl-images-amazon.com/images/I/61FWyLsmCQL._SX258_BO1,204,203,200_.jpg',
-                parts: 1,
-                level: ['A1', 'A2'],
-                rating: 5,
-                ratingCount: 100,
-                youtube_playlist_id: 'c1'
-            },
-            {
-                id: 'a2',
-                title: 'The Fox and The Crane',
-                description: 'Лиса и Журавль',
-                imageId: 'https://www.moscowbooks.ru/image/book/665/w259/i665072.jpg',
-                parts: 1,
-                level: ['B1', 'C1'],
-                rating: 4,
-                ratingCount: 80,
-                youtube_playlist_id: 'c2'
-            }
-        ]
+        books: [],
     },
     mutations: {
         SET_BOOKS(state, payload){
             state.books = payload
         },
+    },
+    actions:{
+        LOAD_BOOKS({commit}){
+            Vue.$db.collection('books')
+            .get()
+            .then(querySnapshot => {
+                let books = []
+                querySnapshot.forEach(s => {
+                    const data = s.data()
+                    let book = {
+                        id: s.id,
+                        title: data.title,
+                        description: data.description,
+                        imageUrl: data.imageUrl,
+                        level: data.level.slice(),
+                        youtube_playlist_id: data.youtube_playlist_id,
+                        parts: []
+                    }
+
+                    let parts = []
+                    if(data.parts){
+                    data.parts.forEach(p => {
+                        let part = {
+                            id: p.id,
+                            title: p.title,
+                            youtube_id: p.youtube_id
+                        }
+
+                        parts.push(part)
+                    })
+                }
+
+                    book.parts = parts
+
+                    books.push(book)
+                })
+
+                commit('SET_BOOKS', books)
+            })
+            .catch(error => console.log(error))
+        }
     },
     getters: {
         getBooks: (state) => state.books,
