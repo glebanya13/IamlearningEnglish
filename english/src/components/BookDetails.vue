@@ -68,7 +68,7 @@
                 <v-flex xs12>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn class="primary" text v-if="canLoadBook(book.id)" @click="loadBook(book.id)">Загрузить</v-btn>
+                    <v-btn class="primary" text>Загрузить</v-btn>
                   </v-card-actions>
                 </v-flex>
               </v-layout>

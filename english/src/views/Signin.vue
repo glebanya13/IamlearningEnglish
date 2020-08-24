@@ -14,7 +14,7 @@
 
 
                 <v-form v-model="valid">
-                  <v-text-field label="Е-мейл" name="login" prepend-icon="mdi-account" type="email" required 
+                  <v-text-field label="Е-мейл" name="login" prepend-icon="mdi-email" type="email" required 
                   v-model="email" :rules="emailRules"></v-text-field>
 
                   <v-text-field

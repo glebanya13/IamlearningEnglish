@@ -9,6 +9,7 @@ import 'firebase/firestore'
 import VuetifyConfirm from 'vuetify-confirm'
 import VueYouTubeEmbed from 'vue-youtube-embed'
 import FormattedDate from './filters/formattedDate'
+import { setupBus } from './infrastructure/eventBus'
 
 Vue.use(VueYouTubeEmbed)
 
@@ -29,6 +30,8 @@ const db = firebaseApp.firestore()
 
 
 Vue.$db = db
+
+setupBus()
 
 firebase.analytics();
 

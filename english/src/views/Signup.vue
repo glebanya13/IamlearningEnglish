@@ -14,7 +14,11 @@
 
 
                 <v-form v-model="valid">
-                  <v-text-field label="Е-мейл" name="login" prepend-icon="mdi-account" type="email" required 
+
+                  <v-text-field label="Имя" name="name" prepend-icon="mdi-account" type="text" required 
+                  v-model="name" :rules="nameRules"></v-text-field>
+
+                  <v-text-field label="Е-мейл" name="login" prepend-icon="mdi-email" type="email" required 
                   v-model="email" :rules="emailRules"></v-text-field>
 
                   <v-text-field
@@ -45,6 +49,7 @@ export default {
     return {
       email: null,
       password: null,
+      name: null,
       valid: null,
       emailRules: [
         v => !!v || 'Пожалуйста введите е-мейл',
@@ -53,6 +58,9 @@ export default {
       passwordRules: [
         v => !!v || 'Пожалуйста введите пароль',
         v => (v && v.length >= 6) || 'Пароль слишком короткий - минимум 6 символов'
+      ],
+      nameRules: [
+        v => !!v || 'Пожалуйста введите ваше имя',
       ],
     }
   },
@@ -75,7 +83,7 @@ export default {
   },
   methods:{
     singup(){
-      this.$store.dispatch('SINGUP', {email: this.email, password: this.password})
+      this.$store.dispatch('SINGUP', {email: this.email, password: this.password, name: this.name})
     }
   }
 };
