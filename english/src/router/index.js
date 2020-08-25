@@ -8,11 +8,17 @@ import Profile from '../views/Profile.vue'
 import Signin from '../views/Signin.vue'
 import Signup from '../views/Signup.vue'
 import Store from '../store'
+import Home from '../views/Home.vue'
 
 
 Vue.use(VueRouter)
 
   const routes = [
+    {
+      path: '/',
+      name: 'home',
+      component: Home
+    },
     {
       path: '/books',
       name: 'books',
@@ -39,7 +45,7 @@ Vue.use(VueRouter)
       path: '/profile',
       name: 'profile',
       component: Profile,
-      beforeEnter: AuthGuard
+      meta: {authRequired: true}
     },
     {
       path: '/signin',
@@ -54,16 +60,25 @@ Vue.use(VueRouter)
   
 ]
 
-function AuthGuard(to, from, next){
-  if(Store.getters.isUserAuthenticated)
-    next()
-  else
-    next('/signin')
-}
 
 const router = new VueRouter({
   routes,
   mode: 'history'
+})
+
+router.beforeEach((to, from, next) => {
+  Store.dispatch('INIT_AUTH')
+  .then(user => {
+  if(to.matched.some(route => route.meta.authRequired))
+  {
+  if(user)
+    next()
+  else
+    next('/signin')
+  }else{
+    next()
+  }
+})
 })
 
 

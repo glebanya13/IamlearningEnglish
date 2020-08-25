@@ -68,7 +68,11 @@
                 <v-flex xs12>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn class="primary" text>Загрузить</v-btn>
+                    <v-btn class="primary" text v-if="canLoadBook(book.id)" @click="loadBook(book.id)">Загрузить</v-btn>
+                    <div v-if="getUserDataBook(book.id)">
+                      <v-icon color="white">work_outline</v-icon>
+                      Книга скачена {{getBookAddedDate(book.id) | formattedDate}}
+                    </div>
                   </v-card-actions>
                 </v-flex>
               </v-layout>

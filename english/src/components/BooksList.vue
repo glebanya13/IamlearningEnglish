@@ -1,7 +1,6 @@
 <template>
-  <v-container grid-list-md>
-      <v-layout row wrap>
-        <v-flex xs12 sm10 md8 offset-sm-1 offset-md-2>
+      <div>
+        <div>
           <v-container fluid>
             <v-layout row>
               <v-flex xs7 md8>
@@ -12,17 +11,22 @@
               </v-flex>
             </v-layout>
           </v-container>
-        </v-flex>
-        <v-flex v-for="book in filteredBooks" :key="book.id" xs12 sm10 md8 offset-sm-1 offset-md-2>
+        </div>
+        <div v-for="book in filteredBooks" :key="book.id">
           <book :book="book"></book>
-        </v-flex>
-      </v-layout>
-  </v-container>
+        </div>
+      </div>
 </template>
 
 <script>
 import Book from './BooksListItem'
 export default {
+  props:{
+    "onlyMy":{
+      type:Boolean,
+      default: false
+    }
+  },
   data(){
     return {
       serchTerm: null,
@@ -36,6 +40,11 @@ export default {
     },
     filteredBooks(){
       let books = this.books
+
+      if(this.onlyMy){
+        books = books.filter(b => this.$store.getters.userData.books[b.id])
+      }
+
       if(this.serchTerm)
         books = books.filter(b =>
          b.title.toLowerCase().indexOf(this.serchTerm.toLowerCase()) >=0

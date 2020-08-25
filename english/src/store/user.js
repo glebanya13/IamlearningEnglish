@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import router from '../router'
 import {EventBus} from '../infrastructure/eventBus'
 
 export default{
@@ -9,7 +8,8 @@ export default{
             uid: null,
             name: null,
             email: null
-        }
+        },
+        unsubscribeAuth: null
     },
     mutations: {
         SET_USER(state, payload){
@@ -29,9 +29,26 @@ export default{
         SET_USER_EMAIL(state, payload){
             state.user.email = payload
         },
+        SET_UNSUBSCRIBE_AUTH(state, payload){
+            state.unsubscribeAuth = payload
+        }
     },
     actions: {
-        SIGNUP({commit}, payload){
+        INIT_AUTH({dispatch, commit, state}){
+            return new Promise((resolve) => {
+                if(state.unsubscribeAuth)
+                    state.unsubscribeAuth()
+
+                let unsubscribe = firebase.auth().onAuthStateChanged(function(user) {
+                    dispatch('STATE_CHANGED', user)
+
+                    resolve(user)
+                });
+
+                commit('SET_UNSUBSCRIBE_AUTH', unsubscribe)
+            })
+        },
+        SINGUP({commit}, payload){
             commit('SET_PROCESSING', true)
             commit('CLEAR_ERROR')
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
@@ -46,7 +63,7 @@ export default{
                 
             })
         },
-        SIGNIN({commit}, payload){
+        SINGIN({commit}, payload){
             commit('SET_PROCESSING', true)
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
             .then(() => {
@@ -68,7 +85,6 @@ export default{
                 dispatch('LOAD_USER_DATA', payload.uid)
             }else{
                 commit('UNSET_USER')
-                router.push('/')
             }
         },
         CHANGE_USER_PROFILE_DATA({commit}, payload){

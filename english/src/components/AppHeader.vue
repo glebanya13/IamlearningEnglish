@@ -2,14 +2,19 @@
   <div>
     <v-navigation-drawer absolute temporary v-model="drawer" class="hidden-md-and-up">
       <v-list>
-        <v-list-item v-for="(item, i) in menuItems" :key="`navdrawer${i}`">
+        <v-list-item v-for="(item, i) in menuItems" :key="`navdrawer${i}`" :to="item.route">
           <v-list-item-icon>
             <v-icon v-html="item.icon"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="item.title"></v-list-item-title>
           </v-list-item-content>
+          
         </v-list-item>
+        <v-btn text @click.prevent="signout()" v-if="isUserAuthenticated">
+          <v-icon left>mdi-exit-run</v-icon>
+            Выйти
+        </v-btn>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar app color="primary" dark>
@@ -50,7 +55,7 @@ export default {
       return this.isUserAuthenticated
         ? [
             {
-              icon: "mdi-eye",
+              icon: "mdi-book",
               title: "Читать",
               route: "/books",
             },
@@ -62,7 +67,7 @@ export default {
           ]
         : [
             {
-              icon: "mdi-eye",
+              icon: "mdi-book",
               title: "Читать",
               route: "/books",
             },
@@ -84,6 +89,7 @@ export default {
       this.$confirm('На сегодня хватит английского? Я вернусь завтра').then(res => {
         if(res)
            this.$store.dispatch('SIGNOUT')
+           this.$router.push({name: 'home'})
       })
     }
   }

@@ -34,7 +34,7 @@ export default {
     },
     data(){
         return {
-            canPronounceWord: false,
+            canPronounceWord: true,
             voice: null,
         }
     },
