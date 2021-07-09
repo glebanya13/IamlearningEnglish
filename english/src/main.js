@@ -28,20 +28,16 @@ Vue.filter('formattedDate', FormattedDate)
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore()
 
-
 Vue.$db = db
 
 setupBus()
-
-firebase.analytics();
 
 new Vue({
   router,
   store,
   vuetify,
   render: h => h(App),
-  created(){
-    
+  created() {
     this.$store.dispatch('LOAD_BOOKS')
   }
 }).$mount('#app')

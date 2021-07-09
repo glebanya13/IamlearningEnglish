@@ -1,3 +1,3 @@
-export function getBookLevel(level){
-    return level.join('/')
-  }
+export function getBookLevel(level) {
+  return level.join('/')
+}

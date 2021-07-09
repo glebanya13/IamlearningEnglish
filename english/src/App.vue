@@ -20,3 +20,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.text-xs-center {
+  text-align: center !important;
+}
+</style>

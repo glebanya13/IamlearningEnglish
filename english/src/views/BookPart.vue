@@ -4,18 +4,20 @@
       <v-flex xs12 sm10 offset-sm-1 v-if="finishedDate">
         <v-card>
           <v-responsive>
-              <v-img
-                src="https://firebasestorage.googleapis.com/v0/b/english-2a59c.appspot.com/o/%D0%91%D0%B5%D0%B7%20%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F.jfif?alt=media&token=43b84ec4-639f-47c7-a2fa-51e543f8d3d2"
-                height="200px"
-              ></v-img>
-            </v-responsive>
-            <v-card-title primary-title>
-              <div class="headline">Я закончил читать эту часть! {{finishedDate | formattedDate}}</div>
-            </v-card-title>
-            <v-card-actions>
-              <span>Моя оценка</span>
-              <v-rating v-model="savedRating" readonly large></v-rating>
-            </v-card-actions>
+            <v-img
+              src="https://firebasestorage.googleapis.com/v0/b/english-2a59c.appspot.com/o/%D0%91%D0%B5%D0%B7%20%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F.jfif?alt=media&token=43b84ec4-639f-47c7-a2fa-51e543f8d3d2"
+              height="200px"
+            ></v-img>
+          </v-responsive>
+          <v-card-title primary-title>
+            <div class="headline">
+              Я закончил читать эту часть! {{ finishedDate | formattedDate }}
+            </div>
+          </v-card-title>
+          <v-card-actions>
+            <span>Моя оценка</span>
+            <v-rating v-model="savedRating" readonly large></v-rating>
+          </v-card-actions>
         </v-card>
       </v-flex>
       <v-flex xs12 sm10 offset-sm-1>
@@ -25,7 +27,12 @@
         <book-part-words :data="part.words"></book-part-words>
       </v-flex>
       <v-flex xs12 sm10 offset-sm-1 class="text-xs-center">
-        <v-dialog v-if="!finishedDate" v-model="finishDialog" persistent max-width="600px">
+        <v-dialog
+          v-if="!finishedDate"
+          v-model="finishDialog"
+          persistent
+          max-width="600px"
+        >
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" color="success" dark @click="finishDialog = true">
               <v-icon>check</v-icon>Готово
@@ -47,7 +54,12 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" dark text @click.native="finishDialog = false">
+              <v-btn
+                color="primary"
+                dark
+                text
+                @click.native="finishDialog = false"
+              >
                 <v-icon>close</v-icon>Закрыть
               </v-btn>
               <v-btn color="primary" dark text @click.native="finishWork()">
@@ -68,11 +80,11 @@ import BookPartWords from "../components/BookPartWords";
 
 export default {
   props: {
-    "bookId": {
+    bookId: {
       type: String,
       required: true,
     },
-    "partId": {
+    partId: {
       type: String,
       required: true,
     },
@@ -86,14 +98,19 @@ export default {
   },
   computed: {
     finishedDate() {
-      return this.$store.getters.userData.books[this.bookId].parts[this.partId].finishedDate;
+      return (
+        this.$store.getters.userData.books[this.bookId].parts[this.partId]
+          .finishedDate || ""
+      );
     },
-    savedRating(){
-      return this.$store.getters.userData.books[this.bookId].parts[this.partId].rating;
-    }
+    savedRating() {
+      return this.$store.getters.userData.books[this.bookId].parts[this.partId]
+        .rating;
+    },
   },
   created() {
-    Vue.$db.collection("bookParts")
+    Vue.$db
+      .collection("bookParts")
       .where("bookId", "==", this.bookId)
       .where("bookPartId", "==", this.partId)
       .get()
@@ -126,6 +143,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

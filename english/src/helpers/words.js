@@ -1,6 +1,6 @@
-export function getFullOriginalWord(entity){
+export function getFullOriginalWord(entity) {
     let result = entity.origText
-    if(entity.origPrefix)
+    if (entity.origPrefix)
         result = `${entity.origPrefix} ${result}`
 
     return result
